@@ -44,4 +44,15 @@ class HabitTest extends TestCase
         $response->assertRedirect('/habits');
         $this->assertDatabaseHas('habits', ['id' => $habit->id, ...$updatedHabit]);
     }
+
+    public function test_habits_can_not_be_created_without_name(): void
+    {
+        $habit = Habit::factory()->raw([
+            'name' => null
+        ]);
+
+        $response = $this->post('/habits', $habit);
+
+        $response->assertSessionHasErrors(['name']);
+    }
 }
