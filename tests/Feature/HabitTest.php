@@ -15,9 +15,19 @@ class HabitTest extends TestCase
     {
         $habits = Habit::factory(3)->create();
 
-        $response = $this->withExceptionHandling()->get('/habits');
+        $response = $this->withoutExceptionHandling()->get('/habits');
 
         $response->assertStatus(200);
         $response->assertViewHas('habits', $habits);
+    }
+
+    public function test_habits_can_be_created(): void
+    {
+        $habit = Habit::factory()->raw();
+
+        $response = $this->withoutExceptionHandling()->post('/habits', $habit);
+
+        $response->assertRedirect('/habits');
+        $this->assertDatabaseHas('habits', $habit);
     }
 }
