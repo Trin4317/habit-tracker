@@ -30,4 +30,18 @@ class HabitTest extends TestCase
         $response->assertRedirect('/habits');
         $this->assertDatabaseHas('habits', $habit);
     }
+
+    public function test_habits_can_be_updated(): void
+    {
+        $habit = Habit::factory()->create();
+        $updatedHabit = [
+            'name' => '::updated_habit::',
+            'times_per_day' => 10
+        ];
+
+        $response = $this->withoutExceptionHandling()->put("/habits/{$habit->id}", $updatedHabit);
+
+        $response->assertRedirect('/habits');
+        $this->assertDatabaseHas('habits', ['id' => $habit->id, ...$updatedHabit]);
+    }
 }
