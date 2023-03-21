@@ -45,14 +45,35 @@ class HabitTest extends TestCase
         $this->assertDatabaseHas('habits', ['id' => $habit->id, ...$updatedHabit]);
     }
 
-    public function test_habits_can_not_be_created_without_name(): void
+    /**
+     * @dataProvider provideBadHabitData
+     */
+    public function test_create_habit_validation($missing, $data): void
     {
-        $habit = Habit::factory()->raw([
-            'name' => null
-        ]);
+        $response = $this->post('/habits', $data);
 
-        $response = $this->post('/habits', $habit);
+        $response->assertSessionHasErrors([$missing]);
+    }
 
-        $response->assertSessionHasErrors(['name']);
+    public function provideBadHabitData()
+    {
+        $habit = Habit::factory()->raw();
+
+        return [
+            'missing name' => [
+                'name',
+                [
+                    ...$habit,
+                    'name' => null,
+                ]
+            ],
+            'missing times_per_day' => [
+                'times_per_day',
+                [
+                    ...$habit,
+                    'times_per_day' => null
+                ]
+            ],
+        ];
     }
 }
