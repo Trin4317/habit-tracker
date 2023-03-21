@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('habits', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->unsignedTinyInteger('times_per_day');
             $table->timestamps();
         });
     }
