@@ -20,3 +20,4 @@ Route::get('/', function () {
 
 Route::get('/habits', [HabitController::class, 'index'])->name('habits.index');
 Route::post('/habits', [HabitController::class, 'store'])->name('habits.store');
+Route::put('/habits/{habit}', [HabitController::class, 'update'])->name('habits.update');
