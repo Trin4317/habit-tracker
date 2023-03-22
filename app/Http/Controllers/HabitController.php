@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Habit;
 use App\Http\Requests\StoreHabitRequest;
+use App\Http\Requests\UpdateHabitRequest;
 
 class HabitController extends Controller
 {
@@ -25,7 +26,7 @@ class HabitController extends Controller
         return to_route('habits.index');
     }
 
-    public function update(Request $request, Habit $habit)
+    public function update(UpdateHabitRequest $request, Habit $habit)
     {
         $habit->update([
             'name' => $request->input('name'),
