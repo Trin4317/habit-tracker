@@ -5,7 +5,16 @@ module.exports = {
     './resources/views/**/*.blade.php'
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'sans': ['Montserrat', 'Arial', 'sans-serif']
+      },
+      colors: {
+        'primary': {
+          600: '#7F56D9'
+        }
+      },
+    },
   },
   plugins: [],
 }
