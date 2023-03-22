@@ -55,6 +55,18 @@ class HabitTest extends TestCase
         $response->assertSessionHasErrors([$missing]);
     }
 
+    /**
+     * @dataProvider provideBadHabitData
+     */
+    public function test_update_habit_validation($missing, $data): void
+    {
+        $habitId = Habit::factory()->create()->id;
+
+        $response = $this->put("/habits/{$habitId}", $data);
+
+        $response->assertSessionHasErrors([$missing]);
+    }
+
     public function provideBadHabitData()
     {
         $habit = Habit::factory()->raw();
