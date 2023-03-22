@@ -1,15 +1,25 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { mount } from "@vue/test-utils";
 import HabitInfo from '@/components/HabitInfo.vue';
 
 describe('HabitInfo.vue', () => {
-    it('displays the habit name', () => {
-        const wrapper = mount(HabitInfo, {
+    let wrapper = null
+
+    beforeEach(() => {
+        wrapper = mount(HabitInfo, {
             props: {
-                'name': 'Drink water'
+                'name': 'Drink water',
+                'times_per_day': 3,
+                'execution_count': 1,
             }
         })
+    })
 
+    it('displays the habit name', () => {
         expect(wrapper.find('#name').text()).toBe('Drink water')
+    })
+
+    it('displays the execution', () => {
+        expect(wrapper.find('#execution').text()).toBe('1 / 3 times')
     })
 })
