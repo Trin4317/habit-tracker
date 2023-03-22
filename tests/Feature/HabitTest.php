@@ -45,6 +45,16 @@ class HabitTest extends TestCase
         $this->assertDatabaseHas('habits', ['id' => $habit->id, ...$updatedHabit]);
     }
 
+    public function test_habits_can_be_deleted(): void
+    {
+        $habitId = Habit::factory()->create()->id;
+
+        $response = $this->withoutExceptionHandling()->delete("/habits/{$habitId}");
+
+        $response->assertRedirect('/habits');
+        $this->assertDatabaseMissing('habits', ['id' => $habitId]);
+    }
+
     /**
      * @dataProvider provideBadHabitData
      */
