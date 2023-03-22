@@ -35,4 +35,11 @@ class HabitController extends Controller
 
         return to_route('habits.index');
     }
+
+    public function destroy(Request $request, Habit $habit)
+    {
+        $habit->delete();
+
+        return to_route('habits.index');
+    }
 }
