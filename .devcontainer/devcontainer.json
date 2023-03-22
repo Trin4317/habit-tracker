@@ -11,7 +11,8 @@
 			"extensions": [
 				"onecentlin.laravel-extension-pack",
 				"bmewburn.vscode-intelephense-client",
-				"bradlc.vscode-tailwindcss"
+				"bradlc.vscode-tailwindcss",
+				"Vue.volar"
 				// "mikestead.dotenv",
 				// "amiralizadeh9480.laravel-extra-intellisense",
 				// "ryannaddy.laravel-artisan",
