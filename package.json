@@ -2,7 +2,8 @@
     "private": true,
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "test": "vitest"
     },
     "devDependencies": {
         "@pinia/testing": "^0.0.15",
