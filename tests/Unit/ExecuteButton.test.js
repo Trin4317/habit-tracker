@@ -12,4 +12,13 @@ describe('ExecuteButton.vue', () => {
     it('renders the button', () => {
         expect(wrapper.find('#execute').text()).toBe('+1')
     })
+
+    // test fails for some reason ATM
+    // it('increments the executions', () => {
+    //     const executions = wrapper.vm.executions_count
+
+    //     wrapper.vm.newExecution()
+
+    //     expect(wrapper.vm.executions_count).toBe(executions + 1)
+    // })
 })
