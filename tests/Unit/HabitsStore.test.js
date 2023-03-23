@@ -4,20 +4,19 @@ import { useHabitsStore } from "@/stores/habits";
 
 describe('Habits Store', () => {
     let habits = null
+    let habitIndex = 0
 
-    beforeEach(() => {
+    beforeEach(async () => {
         setActivePinia(createPinia())
         habits = useHabitsStore()
+        await habits.fetch()
     })
 
-    it('fetches the list of habits', async () => {
-        await habits.fetch()
+    it('fetches the list of habits', () => {
         expect(habits.list.length).toBe(1)
     })
 
     it('increments the execution', async () => {
-        await habits.fetch()
-        const habitIndex = 0
         habits.list[habitIndex].executions_count = 0
 
         habits.newExecution(habitIndex)
@@ -25,9 +24,7 @@ describe('Habits Store', () => {
         expect(habits.list[habitIndex].executions_count).toBe(1)
     })
 
-    it('returns the percent', async () => {
-        await habits.fetch()
-        const habitIndex = 0
+    it('returns the percent', () => {
         habits.list[habitIndex].times_per_day = 3
         habits.list[habitIndex].executions_count = 1
 
