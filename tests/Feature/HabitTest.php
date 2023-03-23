@@ -13,6 +13,9 @@ class HabitTest extends TestCase
 
     public function test_habits_view_can_be_rendered(): void
     {
+        // https://laravel.com/docs/master/vite#disabling-vite-in-tests
+        $this->withoutVite();
+
         $habits = Habit::factory(3)->create();
 
         $response = $this->withoutExceptionHandling()->get('/habits');
