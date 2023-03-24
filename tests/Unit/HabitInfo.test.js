@@ -10,7 +10,7 @@ describe('HabitInfo.vue', () => {
             props: {
                 'name': 'Drink water',
                 'times_per_day': 3,
-                'execution_count': 1,
+                'executions_count': 1,
             }
         })
     })

@@ -10,4 +10,9 @@ class Habit extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function executions()
+    {
+        return $this->hasMany(Execution::class);
+    }
 }
