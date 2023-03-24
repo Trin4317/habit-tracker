@@ -38,10 +38,25 @@ class HabitTest extends TestCase
     {
         $habit = Habit::factory()->raw();
 
-        $response = $this->withoutExceptionHandling()->post('/habits', $habit);
+        $response = $this->withoutExceptionHandling()->postJson('/api/habits', $habit);
 
-        $response->assertRedirect('/habits');
+        $response->assertStatus(200);
         $this->assertDatabaseHas('habits', $habit);
+    }
+
+    public function test_habits_list_can_be_fetched_after_habit_is_created(): void
+    {
+        $habit = Habit::factory()->raw();
+
+        $response = $this->withoutExceptionHandling()->postJson('/api/habits', $habit);
+
+        $habitResource = HabitResource::collection(Habit::withCount('executions')->get());
+        $request = Request::create('/api/habits', 'GET');
+
+        $response->assertStatus(200)
+                 ->assertJson(
+                    $habitResource->response($request)->getData(true)
+            );
     }
 
     public function test_habits_can_be_updated(): void
