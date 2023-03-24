@@ -67,9 +67,14 @@ class HabitTest extends TestCase
             'times_per_day' => 10
         ];
 
-        $response = $this->withoutExceptionHandling()->put("/habits/{$habit->id}", $updatedHabit);
+        $response = $this->withoutExceptionHandling()->putJson("/api/habits/{$habit->id}", $updatedHabit);
 
-        $response->assertRedirect('/habits');
+        $habitResource = HabitResource::collection(Habit::withCount('executions')->get());
+        $request = Request::create("/api/habits/{$habit->id}", 'PUT');
+        $response->assertStatus(200)
+                 ->assertJson(
+                    $habitResource->response($request)->getData(true)
+            );
         $this->assertDatabaseHas('habits', ['id' => $habit->id, ...$updatedHabit]);
     }
 
