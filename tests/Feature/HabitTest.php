@@ -93,9 +93,9 @@ class HabitTest extends TestCase
      */
     public function test_create_habit_validation($missing, $data): void
     {
-        $response = $this->post('/habits', $data);
+        $response = $this->postJson('/api/habits', $data);
 
-        $response->assertSessionHasErrors([$missing]);
+        $response->assertJsonValidationErrors([$missing]);
     }
 
     /**
@@ -105,9 +105,9 @@ class HabitTest extends TestCase
     {
         $habitId = Habit::factory()->create()->id;
 
-        $response = $this->put("/habits/{$habitId}", $data);
+        $response = $this->putJson("/api/habits/{$habitId}", $data);
 
-        $response->assertSessionHasErrors([$missing]);
+        $response->assertJsonValidationErrors([$missing]);
     }
 
     public function provideBadHabitData()
