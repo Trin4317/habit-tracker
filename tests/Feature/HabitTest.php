@@ -3,8 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\Habit;
+use App\Http\Resources\HabitResource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Request;
 use Tests\TestCase;
 
 class HabitTest extends TestCase
@@ -13,25 +15,50 @@ class HabitTest extends TestCase
 
     public function test_habits_view_can_be_rendered(): void
     {
-        // https://laravel.com/docs/master/vite#disabling-vite-in-tests
         $this->withoutVite();
-
-        $habits = Habit::factory(3)->create();
 
         $response = $this->withoutExceptionHandling()->get('/habits');
 
         $response->assertStatus(200);
-        $response->assertViewHas('habits', $habits);
+    }
+
+    public function test_habits_list_can_be_fetched(): void
+    {
+        Habit::factory(3)->create();
+        $habitResource = HabitResource::collection(Habit::withCount('executions')->get());
+        $request = Request::create('/api/habits', 'GET');
+
+        $response = $this->getJson('/api/habits');
+
+        $response->assertStatus(200)
+                 ->assertJson(
+                    $habitResource->response($request)->getData(true)
+            );
     }
 
     public function test_habits_can_be_created(): void
     {
         $habit = Habit::factory()->raw();
 
-        $response = $this->withoutExceptionHandling()->post('/habits', $habit);
+        $response = $this->withoutExceptionHandling()->postJson('/api/habits', $habit);
 
-        $response->assertRedirect('/habits');
+        $response->assertStatus(200);
         $this->assertDatabaseHas('habits', $habit);
+    }
+
+    public function test_habits_list_can_be_fetched_after_habit_is_created(): void
+    {
+        $habit = Habit::factory()->raw();
+
+        $response = $this->withoutExceptionHandling()->postJson('/api/habits', $habit);
+
+        $habitResource = HabitResource::collection(Habit::withCount('executions')->get());
+        $request = Request::create('/api/habits', 'GET');
+
+        $response->assertStatus(200)
+                 ->assertJson(
+                    $habitResource->response($request)->getData(true)
+            );
     }
 
     public function test_habits_can_be_updated(): void
@@ -42,9 +69,14 @@ class HabitTest extends TestCase
             'times_per_day' => 10
         ];
 
-        $response = $this->withoutExceptionHandling()->put("/habits/{$habit->id}", $updatedHabit);
+        $response = $this->withoutExceptionHandling()->putJson("/api/habits/{$habit->id}", $updatedHabit);
 
-        $response->assertRedirect('/habits');
+        $habitResource = HabitResource::collection(Habit::withCount('executions')->get());
+        $request = Request::create("/api/habits/{$habit->id}", 'PUT');
+        $response->assertStatus(200)
+                 ->assertJson(
+                    $habitResource->response($request)->getData(true)
+            );
         $this->assertDatabaseHas('habits', ['id' => $habit->id, ...$updatedHabit]);
     }
 
@@ -52,9 +84,14 @@ class HabitTest extends TestCase
     {
         $habitId = Habit::factory()->create()->id;
 
-        $response = $this->withoutExceptionHandling()->delete("/habits/{$habitId}");
+        $response = $this->withoutExceptionHandling()->deleteJson("/api/habits/{$habitId}");
 
-        $response->assertRedirect('/habits');
+        $habitResource = HabitResource::collection(Habit::withCount('executions')->get());
+        $request = Request::create("/api/habits/{$habitId}", 'DELETE');
+        $response->assertStatus(200)
+                 ->assertJson(
+                    $habitResource->response($request)->getData(true)
+            );
         $this->assertDatabaseMissing('habits', ['id' => $habitId]);
     }
 
@@ -63,9 +100,9 @@ class HabitTest extends TestCase
      */
     public function test_create_habit_validation($missing, $data): void
     {
-        $response = $this->post('/habits', $data);
+        $response = $this->postJson('/api/habits', $data);
 
-        $response->assertSessionHasErrors([$missing]);
+        $response->assertJsonValidationErrors([$missing]);
     }
 
     /**
@@ -75,9 +112,9 @@ class HabitTest extends TestCase
     {
         $habitId = Habit::factory()->create()->id;
 
-        $response = $this->put("/habits/{$habitId}", $data);
+        $response = $this->putJson("/api/habits/{$habitId}", $data);
 
-        $response->assertSessionHasErrors([$missing]);
+        $response->assertJsonValidationErrors([$missing]);
     }
 
     public function provideBadHabitData()

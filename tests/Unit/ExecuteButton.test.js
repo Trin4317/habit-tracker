@@ -13,12 +13,9 @@ describe('ExecuteButton.vue', () => {
         expect(wrapper.find('#execute').text()).toBe('+1')
     })
 
-    // test fails for some reason ATM
-    // it('increments the executions', () => {
-    //     const executions = wrapper.vm.executions_count
+    it('emits an event that increments the executions', async () => {
+        await wrapper.find('#execute').trigger('click')
 
-    //     wrapper.vm.newExecution()
-
-    //     expect(wrapper.vm.executions_count).toBe(executions + 1)
-    // })
+        expect(wrapper.emitted('newExecution')).toBeTruthy()
+    })
 })
