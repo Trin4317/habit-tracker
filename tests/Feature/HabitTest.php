@@ -15,6 +15,8 @@ class HabitTest extends TestCase
 
     public function test_habits_view_can_be_rendered(): void
     {
+        $this->withoutVite();
+
         $response = $this->withoutExceptionHandling()->get('/habits');
 
         $response->assertStatus(200);
