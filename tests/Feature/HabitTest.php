@@ -3,8 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\Habit;
+use App\Http\Resources\HabitResource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Request;
 use Tests\TestCase;
 
 class HabitTest extends TestCase
@@ -13,15 +15,23 @@ class HabitTest extends TestCase
 
     public function test_habits_view_can_be_rendered(): void
     {
-        // https://laravel.com/docs/master/vite#disabling-vite-in-tests
-        $this->withoutVite();
-
-        $habits = Habit::factory(3)->create();
-
         $response = $this->withoutExceptionHandling()->get('/habits');
 
         $response->assertStatus(200);
-        $response->assertViewHas('habits', $habits);
+    }
+
+    public function test_habits_list_can_be_fetched(): void
+    {
+        Habit::factory(3)->create();
+        $habitResource = HabitResource::collection(Habit::withCount('executions')->get());
+        $request = Request::create('/api/habits', 'GET');
+
+        $response = $this->getJson('/api/habits');
+
+        $response->assertStatus(200)
+                 ->assertJson(
+                    $habitResource->response($request)->getData(true)
+            );
     }
 
     public function test_habits_can_be_created(): void
