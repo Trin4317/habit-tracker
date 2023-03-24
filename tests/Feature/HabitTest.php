@@ -82,9 +82,14 @@ class HabitTest extends TestCase
     {
         $habitId = Habit::factory()->create()->id;
 
-        $response = $this->withoutExceptionHandling()->delete("/habits/{$habitId}");
+        $response = $this->withoutExceptionHandling()->deleteJson("/api/habits/{$habitId}");
 
-        $response->assertRedirect('/habits');
+        $habitResource = HabitResource::collection(Habit::withCount('executions')->get());
+        $request = Request::create("/api/habits/{$habitId}", 'DELETE');
+        $response->assertStatus(200)
+                 ->assertJson(
+                    $habitResource->response($request)->getData(true)
+            );
         $this->assertDatabaseMissing('habits', ['id' => $habitId]);
     }
 

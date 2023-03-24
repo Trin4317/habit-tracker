@@ -22,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/habits', [HabitApiController::class, 'index']);
 Route::post('/habits', [HabitApiController::class, 'store']);
 Route::put('/habits/{habit}', [HabitApiController::class, 'update']);
+Route::delete('/habits/{habit}', [HabitApiController::class, 'destroy']);
