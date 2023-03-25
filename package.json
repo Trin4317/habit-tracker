@@ -20,5 +20,8 @@
         "vite": "^4.0.0",
         "vitest": "^0.29.7",
         "vue": "^3.2.47"
+    },
+    "dependencies": {
+        "@headlessui/vue": "^1.7.12"
     }
 }
