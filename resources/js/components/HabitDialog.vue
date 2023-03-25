@@ -36,7 +36,29 @@
                             </DialogTitle>
 
                             <div class="mt-2">
+                                <div>
+                                    <label for="name" class="block text-sm font-medium text-gray-700">
+                                        Habit Name
+                                    </label>
+                                    <input type="text" name="name"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-600"
+                                    >
+                                    <span class="text-sm text-red-600">
+                                        The name field is required
+                                    </span>
+                                </div>
 
+                                <div class="mt-2">
+                                    <label for="times_per_day" class="block text-sm font-medium text-gray-700">
+                                        Times Per Day
+                                    </label>
+                                    <input type="text" name="times_per_day"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-600"
+                                    >
+                                    <span class="text-sm text-red-600">
+                                        The times per day field is required
+                                    </span>
+                                </div>
                             </div>
 
                             <div class="mt-4">
