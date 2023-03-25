@@ -25,6 +25,7 @@ export const useHabitsStore = defineStore('habits', () => {
         let habit = list.value[habitIndex]
         if (habit.executions_count < habit.times_per_day) {
             list.value[habitIndex].executions_count++
+            axios.post(`/api/habits/${habit.id}/execute`)
         }
     }
 
