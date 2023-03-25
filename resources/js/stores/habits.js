@@ -4,6 +4,7 @@ import { ref } from "vue";
 
 export const useHabitsStore = defineStore('habits', () => {
     const list = ref([])
+    const isDialogOpen = ref(false)
 
     const fetch = async () => {
         try {
@@ -26,10 +27,21 @@ export const useHabitsStore = defineStore('habits', () => {
         return habit.times_per_day > 0 ? Math.floor(habit.executions_count / habit.times_per_day * 100) : 0
     }
 
+    const openDialog = () => {
+        isDialogOpen.value = true
+    }
+
+    const closeDialog = () => {
+        isDialogOpen.value = false
+    }
+
     return {
         list,
+        isDialogOpen,
         fetch,
         newExecution,
         percent,
+        openDialog,
+        closeDialog,
     }
 })
