@@ -32,7 +32,7 @@
                                             align-middle shadow-xl transition-all"
                         >
                             <DialogTitle as="h3" class="text-lg font-medium leading-6 text-gray-900">
-                                New Habit
+                                {{ habits.formData.id ? 'Edit Habit' : 'New Habit' }}
                             </DialogTitle>
 
                             <div class="mt-2">
@@ -95,7 +95,11 @@
     const storeHabit = async () => {
         loading.value = true
 
-        await habits.storeHabit()
+        if (habits.formData.id) {
+            await habits.updateHabit()
+        } else {
+            await habits.storeHabit()
+        }
 
         loading.value = false
     }
