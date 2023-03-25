@@ -59,6 +59,34 @@ export const useHabitsStore = defineStore('habits', () => {
         }
     }
 
+    const editHabit = (habitIndex) => {
+        let habit = list.value[habitIndex]
+
+        formData.id = habit.id
+        formData.name = habit.name
+        formData.times_per_day = habit.times_per_day
+
+        openDialog()
+    }
+
+    const updateHabit = async () => {
+        try {
+            let response = await axios.put(`/api/habits/${formData.id}`, formData)
+
+            validationErrors.value = {}
+            formData.id = ''
+            formData.name = ''
+            formData.times_per_day = ''
+
+            list.value = response.data.data
+            closeDialog()
+        } catch (error) {
+            if (error.response.status == 422) {
+                validationErrors.value = error.response.data.errors
+            }
+        }
+    }
+
     return {
         list,
         isDialogOpen,
@@ -70,5 +98,7 @@ export const useHabitsStore = defineStore('habits', () => {
         openDialog,
         closeDialog,
         storeHabit,
+        editHabit,
+        updateHabit,
     }
 })
