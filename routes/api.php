@@ -23,3 +23,4 @@ Route::get('/habits', [HabitApiController::class, 'index']);
 Route::post('/habits', [HabitApiController::class, 'store']);
 Route::put('/habits/{habit}', [HabitApiController::class, 'update']);
 Route::delete('/habits/{habit}', [HabitApiController::class, 'destroy']);
+Route::post('/habits/{habit}/execute', [HabitApiController::class, 'execute']);

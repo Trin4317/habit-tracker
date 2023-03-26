@@ -23,7 +23,7 @@ class StoreHabitRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'times_per_day' => ['required']
+            'times_per_day' => ['required', 'numeric', 'min:1']
         ];
     }
 }
