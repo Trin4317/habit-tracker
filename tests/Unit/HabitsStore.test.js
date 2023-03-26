@@ -58,4 +58,14 @@ describe('Habits Store', () => {
         expect(habits.formData.name).toBe(habits.list[habitIndex].name)
         expect(habits.formData.times_per_day).toBe(habits.list[habitIndex].times_per_day)
     })
+
+    it('clears the form data after creating a habit', async () => {
+        habits.formData.name = 'Test'
+        habits.formData.times_per_day = 1
+
+        await habits.storeHabit()
+
+        expect(habits.formData.name).toBe('')
+        expect(habits.formData.times_per_day).toBe('')
+    })
 })
