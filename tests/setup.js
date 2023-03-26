@@ -48,6 +48,19 @@ export const requestHandlers = [
 
     rest.post('http://localhost:3000/api/habits/:habit/execute', (req, res, ctx) => {
         return res(ctx.status(200), ctx.json({}))
+    }),
+
+    rest.put('http://localhost:3000/api/habits/:habit', async (req, res, ctx) => {
+        const { name, times_per_day } = await req.json()
+
+        if (name == '' || times_per_day == '') {
+            return res(ctx.status(422), ctx.json(validationErrors))
+        }
+
+        habits.data[0].name = name
+        habits.data[0].times_per_day = times_per_day
+
+        return res(ctx.status(200), ctx.json(habits))
     })
 ]
 
