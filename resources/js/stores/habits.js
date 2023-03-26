@@ -86,6 +86,17 @@ export const useHabitsStore = defineStore('habits', () => {
         }
     }
 
+    const deleteHabit = async (habitIndex) => {
+        let habit = list.value[habitIndex]
+        try {
+            let response = await axios.delete(`/api/habits/${habit.id}`)
+
+            list.value = response.data.data
+        } catch (error) {
+            //
+        }
+    }
+
     return {
         list,
         isDialogOpen,
@@ -99,5 +110,6 @@ export const useHabitsStore = defineStore('habits', () => {
         storeHabit,
         editHabit,
         updateHabit,
+        deleteHabit,
     }
 })
