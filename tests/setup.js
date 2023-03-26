@@ -15,6 +15,10 @@ const habits = {
 export const requestHandlers = [
     rest.get('http://localhost:3000/api/habits', (req, res, ctx) => {
         return res(ctx.status(200), ctx.json(habits))
+    }),
+
+    rest.post('http://localhost:3000/api/habits/:habit/execute', (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json({}))
     })
 ]
 
