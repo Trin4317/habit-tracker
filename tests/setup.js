@@ -61,7 +61,13 @@ export const requestHandlers = [
         habits.data[0].times_per_day = times_per_day
 
         return res(ctx.status(200), ctx.json(habits))
-    })
+    }),
+
+    rest.delete('http://localhost:3000/api/habits/:habit', (req, res, ctx) => {
+        habits.data.shift()
+
+        return res(ctx.status(200), ctx.json(habits))
+    }),
 ]
 
 const server = setupServer(...requestHandlers)
