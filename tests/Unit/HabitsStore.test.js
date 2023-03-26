@@ -39,4 +39,23 @@ describe('Habits Store', () => {
 
         expect(habits.list[habitIndex].executions_count).toBe(3)
     })
+
+    it('opens the dialog', () => {
+        habits.openDialog()
+
+        expect(habits.isDialogOpen).toBe(true)
+    })
+
+    it('close the dialog', () => {
+        habits.closeDialog()
+
+        expect(habits.isDialogOpen).toBe(false)
+    })
+
+    it('opens the edit habit dialog with correct form data', () => {
+        habits.editHabit(habitIndex)
+
+        expect(habits.formData.name).toBe(habits.list[habitIndex].name)
+        expect(habits.formData.times_per_day).toBe(habits.list[habitIndex].times_per_day)
+    })
 })
