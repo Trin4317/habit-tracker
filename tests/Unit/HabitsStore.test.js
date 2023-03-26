@@ -68,4 +68,11 @@ describe('Habits Store', () => {
         expect(habits.formData.name).toBe('')
         expect(habits.formData.times_per_day).toBe('')
     })
+
+    it('returns the validation errors when creating a habit', async () => {
+        await habits.storeHabit()
+
+        expect(habits.validationErrors.name.length).toBe(1)
+        expect(habits.validationErrors.times_per_day.length).toBe(1)
+    })
 })

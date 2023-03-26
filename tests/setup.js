@@ -12,14 +12,29 @@ const habits = {
     ]
 }
 
+const validationErrors = {
+    errors: {
+        name: [
+            'The name field is required'
+        ],
+        times_per_day: [
+            'The times_per_day field is required'
+        ]
+    }
+}
+
 export const requestHandlers = [
     rest.get('http://localhost:3000/api/habits', (req, res, ctx) => {
         return res(ctx.status(200), ctx.json(habits))
     }),
 
-    rest.post('http://localhost:3000/api/habits', (req, res, ctx) => {
+    rest.post('http://localhost:3000/api/habits', async (req, res, ctx) => {
         // extract the request body in json format to separate variables
-        const { name, times_per_day } = req.json()
+        const { name, times_per_day } = await req.json()
+
+        if (name == '' || times_per_day == '') {
+            return res(ctx.status(422), ctx.json(validationErrors))
+        }
 
         habits.data.push({
             id: habits.data.length + 1,
